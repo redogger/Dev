@@ -1,0 +1,203 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ───────────────────────────────────────────
+   ROOT & RESET
+─────────────────────────────────────────── */
+:root {
+  --console-width: 680px;
+  --console-height: 340px;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* ───────────────────────────────────────────
+   CUSTOM SCROLLBARS
+─────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 3px;
+  background: rgba(120, 120, 120, 0.35);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(120, 120, 120, 0.6);
+}
+
+/* ───────────────────────────────────────────
+   GLASSMORPHISM UTILITY
+─────────────────────────────────────────── */
+.glass {
+  backdrop-filter: blur(18px) saturate(180%);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+}
+
+.glass-dark {
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  background: rgba(13, 17, 23, 0.82);
+  border: 1px solid rgba(88, 166, 255, 0.12);
+}
+
+.glass-neon {
+  backdrop-filter: blur(20px) saturate(200%);
+  -webkit-backdrop-filter: blur(20px) saturate(200%);
+  background: rgba(8, 8, 16, 0.88);
+  border: 1px solid rgba(0, 255, 136, 0.2);
+  box-shadow: 0 0 30px rgba(0, 255, 136, 0.08), inset 0 0 30px rgba(0, 255, 136, 0.03);
+}
+
+.glass-classic {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background: rgba(236, 233, 216, 0.90);
+  border: 2px solid rgba(10, 36, 106, 0.35);
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.15), inset 1px 1px 0 rgba(255,255,255,0.6);
+}
+
+/* ───────────────────────────────────────────
+   NEON GLOW UTILITIES
+─────────────────────────────────────────── */
+.neon-glow {
+  text-shadow: 0 0 8px currentColor, 0 0 20px currentColor;
+}
+
+.neon-border {
+  box-shadow: 0 0 0 1px #00ff8844, 0 0 12px #00ff8820, inset 0 0 12px #00ff8806;
+}
+
+.neon-btn-glow {
+  box-shadow: 0 0 10px #00ff8855, 0 0 30px #00ff8822;
+}
+
+/* ───────────────────────────────────────────
+   CLASSIC WINDOWS-STYLE UTILITIES
+─────────────────────────────────────────── */
+.classic-inset {
+  box-shadow: inset 1px 1px 0 #fff, inset -1px -1px 0 #808080, inset 2px 2px 0 #dfdfdf, inset -2px -2px 0 #404040;
+}
+
+.classic-raised {
+  box-shadow: 1px 1px 0 #fff, -1px -1px 0 #808080, 2px 2px 0 #dfdfdf, -2px -2px 0 #404040;
+}
+
+.classic-btn {
+  box-shadow: inset -1px -1px 0 #808080, inset 1px 1px 0 #dfdfdf;
+}
+
+/* ───────────────────────────────────────────
+   FLOATING CONSOLE DRAG HANDLE
+─────────────────────────────────────────── */
+.drag-handle {
+  cursor: grab;
+  user-select: none;
+}
+.drag-handle:active {
+  cursor: grabbing;
+}
+
+/* ───────────────────────────────────────────
+   CONSOLE TYPEWRITER CURSOR
+─────────────────────────────────────────── */
+.console-cursor::after {
+  content: '█';
+  animation: flicker 0.8s step-end infinite;
+  opacity: 0.8;
+}
+
+@keyframes flicker {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 0; }
+}
+
+/* ───────────────────────────────────────────
+   RESIZE HANDLE
+─────────────────────────────────────────── */
+.resize-handle {
+  cursor: se-resize;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 16px;
+  height: 16px;
+  z-index: 10;
+}
+
+/* ───────────────────────────────────────────
+   MONACO EDITOR OVERRIDE
+─────────────────────────────────────────── */
+.monaco-editor .margin {
+  background: transparent !important;
+}
+
+/* ───────────────────────────────────────────
+   SIDEBAR INPUT FOCUS RING
+─────────────────────────────────────────── */
+.sidebar-input:focus {
+  outline: none;
+  ring: 2px;
+}
+
+/* ───────────────────────────────────────────
+   STATUS INDICATOR PULSE
+─────────────────────────────────────────── */
+.status-ok {
+  animation: pulse-green 2s ease-in-out infinite;
+}
+
+@keyframes pulse-green {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(63, 185, 80, 0.4); }
+  50% { box-shadow: 0 0 0 5px rgba(63, 185, 80, 0); }
+}
+
+/* ───────────────────────────────────────────
+   THEME TRANSITION
+─────────────────────────────────────────── */
+.theme-transition {
+  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.2s ease;
+}
+
+/* ───────────────────────────────────────────
+   TOOLTIP
+─────────────────────────────────────────── */
+[data-tooltip] {
+  position: relative;
+}
+[data-tooltip]::before {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  font-size: 10px;
+  padding: 3px 7px;
+  border-radius: 4px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s;
+  margin-bottom: 4px;
+  font-family: 'JetBrains Mono', monospace;
+}
+[data-tooltip]:hover::before {
+  opacity: 1;
+}
