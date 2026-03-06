@@ -1,7 +1,7 @@
 {
-  "name": "dev-cloud-pro-v3",
-  "version": "3.0.0",
-  "description": "Dev-Cloud Pro v3 — Pixel-perfect Dev-C++ 5.11 + Modern IDE with MacBook Export",
+  "name": "greg-ide-enterprise",
+  "version": "4.0.0",
+  "description": "GReg IDE — Enterprise C++ Platform",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -20,7 +20,9 @@
     "clsx": "^2.1.1",
     "tailwind-merge": "^2.4.0",
     "jspdf": "^2.5.1",
-    "jspdf-autotable": "^3.8.2"
+    "jspdf-autotable": "^3.8.2",
+    "jszip": "^3.10.1",
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.19",
@@ -29,7 +31,5 @@
     "postcss": "^8.4.40",
     "tailwindcss": "^3.4.7"
   },
-  "engines": {
-    "node": ">=18.17.0"
-  }
+  "engines": { "node": ">=18.17.0" }
 }

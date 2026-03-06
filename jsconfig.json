@@ -13,9 +13,8 @@
     "jsx": "preserve",
     "strict": false,
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true
   },
-  "include": ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx"],
+  "include": ["**/*.js", "**/*.jsx"],
   "exclude": ["node_modules", ".next"]
 }
