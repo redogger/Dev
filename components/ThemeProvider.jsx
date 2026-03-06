@@ -1,134 +1,88 @@
 "use client";
-
 import { createContext, useContext, useState } from "react";
 
-// ─── Theme Definitions ────────────────────────────────────────────────────────
 export const THEMES = {
   classic: {
     id: "classic",
     label: "Classic Dev-C++ 5.11",
     icon: "🖥",
-    font: "'Courier New', Courier, monospace",
-    monacoTheme: "vs",
+    isClassic: true,
+    font: "Tahoma, 'Segoe UI', Arial, sans-serif",
+    monoFont: "'Courier New', Courier, monospace",
+    monacoTheme: "classic-devcpp",
     colors: {
-      bg: "#ece9d8",
-      sidebar: "#d4d0c8",
-      header: "#0a246a",
-      headerText: "#ffffff",
-      editor: "#ffffff",
-      console: "#000080",
-      consoleText: "#ffffff",
-      accent: "#0a246a",
-      accentHover: "#1a3a9a",
-      border: "#999999",
-      borderLight: "#cccccc",
-      text: "#000000",
-      textMuted: "#333333",
-      label: "#444444",
-      btnBg: "#d4d0c8",
-      btnBorder: "#808080",
-      btnText: "#000000",
-      inputBg: "#ffffff",
-      inputBorder: "#808080",
-      statusOk: "#006400",
-      statusErr: "#cc0000",
-      sectionTitle: "#0a246a",
-      toggleOn: "#0a246a",
-      lineNumBg: "#e8e6de",
-      lineNum: "#777777",
+      bg: "#ece9d8", sidebar: "#d4d0c8", header: "#0a246a",
+      headerText: "#fff", editor: "#fff", editorText: "#000",
+      console: "#000080", consoleText: "#fff",
+      accent: "#0a246a", border: "#919b9c",
+      text: "#000", textMuted: "#555", label: "#333",
+      btnBg: "#d4d0c8", btnText: "#000",
+      inputBg: "#fff", inputBorder: "#808080",
+      statusOk: "#006400", statusErr: "#cc0000",
+      lineNumBg: "#e8e6de", lineNum: "#777",
+      tabActiveBg: "#ece9d8", tabInactiveBg: "#d4d0c8",
+      bottomPanel: "#d4d0c8",
     },
-    glassClass: "glass-classic",
   },
-
   midnight: {
     id: "midnight",
     label: "Midnight Engineering",
     icon: "🌑",
-    font: "'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace",
-    monacoTheme: "vs-dark",
+    isClassic: false,
+    font: "'JetBrains Mono', 'Fira Code', monospace",
+    monoFont: "'JetBrains Mono', monospace",
+    monacoTheme: "midnight-eng",
     colors: {
-      bg: "#0d1117",
-      sidebar: "#161b22",
-      header: "#161b22",
-      headerText: "#58a6ff",
-      editor: "#0d1117",
-      console: "#010409",
-      consoleText: "#3fb950",
-      accent: "#58a6ff",
-      accentHover: "#79b8ff",
-      border: "#30363d",
-      borderLight: "#21262d",
-      text: "#c9d1d9",
-      textMuted: "#8b949e",
-      label: "#8b949e",
-      btnBg: "#21262d",
-      btnBorder: "#30363d",
-      btnText: "#c9d1d9",
-      inputBg: "#0d1117",
-      inputBorder: "#30363d",
-      statusOk: "#3fb950",
-      statusErr: "#f85149",
-      sectionTitle: "#58a6ff",
-      toggleOn: "#58a6ff",
-      lineNumBg: "#161b22",
-      lineNum: "#484f58",
+      bg: "#0d1117", sidebar: "#161b22", header: "#161b22",
+      headerText: "#58a6ff", editor: "#0d1117", editorText: "#c9d1d9",
+      console: "#010409", consoleText: "#3fb950",
+      accent: "#58a6ff", border: "#30363d",
+      text: "#c9d1d9", textMuted: "#8b949e", label: "#8b949e",
+      btnBg: "#21262d", btnText: "#c9d1d9",
+      inputBg: "#0d1117", inputBorder: "#30363d",
+      statusOk: "#3fb950", statusErr: "#f85149",
+      lineNumBg: "#161b22", lineNum: "#484f58",
+      tabActiveBg: "#0d1117", tabInactiveBg: "#161b22",
+      bottomPanel: "#010409",
     },
-    glassClass: "glass-dark",
   },
-
   neon: {
     id: "neon",
     label: "Neon Hacker",
     icon: "⚡",
-    font: "'JetBrains Mono', 'Courier New', monospace",
-    monacoTheme: "vs-dark",
+    isClassic: false,
+    font: "'JetBrains Mono', monospace",
+    monoFont: "'JetBrains Mono', monospace",
+    monacoTheme: "neon-hacker",
     colors: {
-      bg: "#080810",
-      sidebar: "#0d0d1a",
-      header: "#0d0d1a",
-      headerText: "#00ff88",
-      editor: "#080810",
-      console: "#080810",
-      consoleText: "#00ff88",
-      accent: "#00ff88",
-      accentHover: "#33ffaa",
-      border: "#00ff8833",
-      borderLight: "#00ff8815",
-      text: "#d0d0ff",
-      textMuted: "#667799",
-      label: "#667799",
-      btnBg: "#0d0d1a",
-      btnBorder: "#00ff8866",
-      btnText: "#00ff88",
-      inputBg: "#080810",
-      inputBorder: "#00ff8855",
-      statusOk: "#00ff88",
-      statusErr: "#ff4466",
-      sectionTitle: "#00ff88",
-      toggleOn: "#00ff88",
-      lineNumBg: "#0d0d1a",
-      lineNum: "#334466",
+      bg: "#080810", sidebar: "#0d0d1a", header: "#0d0d1a",
+      headerText: "#00ff88", editor: "#080810", editorText: "#d0d0ff",
+      console: "#080810", consoleText: "#00ff88",
+      accent: "#00ff88", border: "#00ff8830",
+      text: "#d0d0ff", textMuted: "#667799", label: "#667799",
+      btnBg: "#0d0d1a", btnText: "#00ff88",
+      inputBg: "#080810", inputBorder: "#00ff8855",
+      statusOk: "#00ff88", statusErr: "#ff4466",
+      lineNumBg: "#0d0d1a", lineNum: "#334466",
+      tabActiveBg: "#080810", tabInactiveBg: "#0d0d1a",
+      bottomPanel: "#080810",
     },
-    glassClass: "glass-neon",
   },
 };
 
-// ─── Context ──────────────────────────────────────────────────────────────────
-const ThemeContext = createContext(null);
+const Ctx = createContext(null);
 
 export function ThemeProvider({ children }) {
-  const [themeKey, setThemeKey] = useState("midnight");
-  const theme = THEMES[themeKey];
-
+  const [themeKey, setThemeKey] = useState("classic");
   return (
-    <ThemeContext.Provider value={{ theme, themeKey, setThemeKey, themes: THEMES }}>
+    <Ctx.Provider value={{ theme: THEMES[themeKey], themeKey, setThemeKey, themes: THEMES }}>
       {children}
-    </ThemeContext.Provider>
+    </Ctx.Provider>
   );
 }
 
 export function useTheme() {
-  const ctx = useContext(ThemeContext);
-  if (!ctx) throw new Error("useTheme must be used inside <ThemeProvider>");
-  return ctx;
+  const c = useContext(Ctx);
+  if (!c) throw new Error("useTheme outside ThemeProvider");
+  return c;
 }

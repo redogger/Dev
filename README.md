@@ -1,230 +1,294 @@
-# ⬡ Dev-Cloud Pro — Professional Online C++ IDE
+# ⬡ Dev-Cloud Pro v3
 
-> A commercial-grade online C++ IDE with automated student branding, a MOSS-defeating mutation engine, glassmorphism floating terminal, and full Monaco editor integration.
+> **Pixel-perfect Dev-C++ 5.11 replica + Modern Dark IDE, mobile-optimised, with MacBook Pro 14" assignment export.**
 
 ---
 
-## ✨ Features
+## 🎯 What's New in v3
 
-| Category | Features |
+| Feature | Details |
 |---|---|
-| **Editor** | Monaco Editor with C++17 IntelliSense, syntax highlighting, custom themes, auto-complete |
-| **Execution** | Judge0 CE sandbox (live) + smart offline simulation fallback |
-| **Injection Engine** | Automatic `Student Name` + `ID` injection as first `main()` execution lines |
-| **Mutation Engine v3** | Variable substitution, `for→while` loop swap, `if-else→switch` transform, noise structs, dead-code blocks, comment mutation, build token embedding |
-| **Floating Terminal** | Glassmorphism-styled, draggable, resizable, minimizable floating console |
-| **Theme Engine** | Classic Dev-C++ 5.11 (Light), Midnight Engineering (Dark), Neon Hacker |
-| **Export** | `.cpp` file download + professional PDF execution report |
+| **Dual-UI Engine** | Seamlessly switch between Classic Dev-C++ 5.11 (WinXP style) and Midnight/Neon modern themes |
+| **MacBook Pro Export** | Canvas-rendered 3024×1964 PNG with realistic aluminium bezel, notch, traffic lights |
+| **Student Profile Modal** | Hidden modal — no visible name/ID in sidebar. Auto-injects into every build |
+| **Touch-First Console** | `onPointerDown/Move/Up` with `setPointerCapture` for flawless mobile drag + resize |
+| **Monaco Mobile Fixes** | `contextmenu: false`, `quickSuggestions: false` for Android compatibility |
+| **11-Stage Mutation Engine** | Full anti-MOSS pipeline including `for→while`, `if-else→switch`, struct noise, dead-code |
+| **Clean Default Template** | Empty `int main()` — no pre-filled examples |
+| **jsconfig.json** | Full `@/*` path aliasing — eliminates `Module not found` errors |
+| **Docker Ready** | Multi-stage Dockerfile + `docker-compose.yml` for VPS/cloud deployment |
 
 ---
 
-## 📁 Project Structure
+## 📁 Directory Structure
 
 ```
-dev-cloud-pro/
+dev-cloud-pro-v3/
+│
 ├── app/
-│   ├── globals.css          # Global styles, glassmorphism, theme utilities
-│   ├── layout.js            # Next.js root layout + metadata
-│   └── page.js              # Root page, state orchestration
+│   ├── globals.css              # Win3D effects, glassmorphism, mobile touch CSS
+│   ├── layout.js                # Root layout, mobile viewport, no-scale meta
+│   └── page.js                  # Root orchestrator — dual-UI engine, all state
 │
 ├── components/
-│   ├── ThemeProvider.jsx    # Theme context + all 3 theme definitions
-│   ├── Sidebar.jsx          # External toolbar: inputs, actions, theme switcher
-│   ├── Editor.jsx           # Monaco Editor with custom C++ themes & IntelliSense
-│   └── FloatingConsole.jsx  # Draggable/resizable glassmorphism terminal window
+│   ├── ThemeProvider.jsx        # Context with 3 complete theme objects
+│   ├── ClassicLayout.jsx        # Dev-C++ 5.11 replica: menu bar, icon toolbar, status bar
+│   ├── ModernLayout.jsx         # Midnight/Neon: external sidebar + header
+│   ├── Editor.jsx               # Monaco with 3 custom C++ themes + mobile fixes
+│   ├── FloatingConsole.jsx      # Pointer Events drag/resize, glassmorphism terminal
+│   ├── ClassicBottomPanel.jsx   # Tabbed Compiler/Compile Log/Debug panel
+│   ├── StudentProfileModal.jsx  # Hidden student credentials modal
+│   └── MacExportModal.jsx       # MacBook export preview + download UI
 │
 ├── lib/
-│   ├── mutationEngine.js    # 9-stage anti-MOSS mutation system
-│   ├── injectionLogic.js    # Student metadata source-to-source transform
-│   └── pdfExport.js         # jsPDF professional report generator
+│   ├── mutationEngine.js        # 11-stage anti-MOSS mutation pipeline
+│   ├── injectionLogic.js        # Source-to-source student metadata injection
+│   ├── macExport.js             # Canvas-based MacBook Pro 14" frame renderer
+│   └── pdfExport.js             # jsPDF professional report generator
 │
 ├── hooks/
-│   └── useCodeRunner.js     # Judge0 CE API hook + simulation fallback
+│   └── useCodeRunner.js         # Judge0 CE polling hook + simulation fallback
 │
-├── public/                  # Static assets
-├── package.json
-├── next.config.js
-├── tailwind.config.js
-└── README.md
+├── jsconfig.json                # @/* path aliases — fixes module resolution
+├── Dockerfile                   # Multi-stage production build
+├── docker-compose.yml           # Orchestration with optional Traefik/SSL
+├── next.config.js               # standalone output, Monaco webpack config
+├── tailwind.config.js           # Win3D shadows, custom theme colors
+└── package.json
 ```
 
 ---
 
-## 🚀 Quick Start (Local Development)
+## 🚀 Quick Start
 
 ### Prerequisites
-- **Node.js** ≥ 18.17.0
-- **npm** ≥ 9.x or **pnpm** ≥ 8.x
+- Node.js ≥ 18.17.0
+- npm ≥ 9.x
 
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/your-org/dev-cloud-pro.git
-cd dev-cloud-pro
-```
-
-### 2. Install dependencies
+### 1. Install & Run
 
 ```bash
 npm install
-# or
-pnpm install
-```
-
-### 3. Run the development server
-
-```bash
 npm run dev
+# → http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
-
----
-
-## ☁️ Deployment to Vercel
-
-### Option A — Vercel CLI (Recommended)
+### 2. Production Build
 
 ```bash
-# Install Vercel CLI globally
-npm install -g vercel
-
-# Login to your Vercel account
-vercel login
-
-# Deploy from the project root
-vercel
-
-# For production deployment
-vercel --prod
-```
-
-Follow the interactive prompts:
-- **Set up and deploy?** → Yes
-- **Which scope?** → Your personal account or team
-- **Link to existing project?** → No (first time)
-- **Project name** → `dev-cloud-pro`
-- **Directory** → `./` (current)
-- **Override settings?** → No
-
-### Option B — GitHub Integration (Zero-config)
-
-1. Push your project to a GitHub repository
-2. Go to [vercel.com/new](https://vercel.com/new)
-3. Import your GitHub repository
-4. Vercel auto-detects Next.js — click **Deploy**
-5. Your app is live in ~90 seconds ⚡
-
-### Vercel Configuration
-
-No environment variables are required for basic functionality. Judge0 CE is a free public API.
-
-For **production** with high traffic, consider self-hosting Judge0:
-
-```env
-# .env.local (optional — for self-hosted Judge0)
-NEXT_PUBLIC_JUDGE0_URL=https://your-judge0-instance.com
+npm run build
+npm run start
 ```
 
 ---
 
-## 🔧 Configuration
+## 🐳 Docker Deployment (VPS / DigitalOcean / Hetzner)
 
-### Customising the Base Assignment
+### Option A — Docker Compose (Recommended)
 
-Edit the `BASE_CODE` constant in `app/page.js` to use your own C++ assignment template.
+```bash
+# 1. Clone your repo
+git clone https://github.com/your-org/dev-cloud-pro-v3.git
+cd dev-cloud-pro-v3
+
+# 2. Set environment (optional — defaults to public Judge0 CE)
+export JUDGE0_URL=https://ce.judge0.com
+export HOST_PORT=3000
+
+# 3. Build and start
+docker-compose up -d --build
+
+# View logs
+docker-compose logs -f dev-cloud
+
+# Stop
+docker-compose down
+```
+
+### Option B — Raw Docker
+
+```bash
+# Build
+docker build \
+  --build-arg NEXT_PUBLIC_JUDGE0_URL=https://ce.judge0.com \
+  -t dev-cloud-pro-v3 .
+
+# Run
+docker run -d \
+  --name dev-cloud \
+  -p 3000:3000 \
+  -e NODE_ENV=production \
+  dev-cloud-pro-v3
+
+# Health check
+curl http://localhost:3000
+```
+
+### Environment Variables
+
+| Variable | Default | Description |
+|---|---|---|
+| `NEXT_PUBLIC_JUDGE0_URL` | `https://ce.judge0.com` | Judge0 API endpoint |
+| `HOST_PORT` | `3000` | External port mapping |
+| `JUDGE0_URL` | `https://ce.judge0.com` | Build-time Judge0 URL |
+
+### Nginx Reverse Proxy
+
+```nginx
+server {
+    listen 80;
+    server_name your-domain.com;
+    
+    location / {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+```
+
+### SSL with Certbot
+
+```bash
+certbot --nginx -d your-domain.com
+```
+
+---
+
+## 🔑 Key Features Explained
+
+### Dual-UI Engine
+
+Switching between `Classic Dev-C++ 5.11` and `Midnight/Neon` themes in the Theme Engine instantly swaps the **entire layout component** — not just colours. The Classic layout renders:
+- A Windows XP blue-gradient title bar
+- A text menu bar (File, Edit, Search…)  
+- A graphical icon toolbar with 3D bevel effects
+- A tabbed bottom panel (Compiler / Compile Log / Debug)
+
+Code state is preserved across layout switches.
+
+### Student Profile (Hidden Injection)
+
+Click **👤 Profile** (classic) or **Open Student Profile…** (modern) to open the modal. Enter your name and ID — these are **never visible in the main UI**. On every `Build`, the injection engine inserts:
+
+```cpp
+cout << "Name: " << "Alice Johnson" << "\n" << "ID: " << "CS-2024-0042" << endl;
+cout << string(44, '-') << endl;
+```
+...as the **very first executable statements** inside `int main()`.
+
+### MacBook Pro 14" Export
+
+Click **💻 MacBook Export** (classic toolbar) or **Export MacBook PNG** (modern sidebar) to open the export modal. The Canvas renderer draws:
+1. Aluminium bezel with realistic gradient
+2. Screen with rounded corners and inner shadow
+3. Camera notch
+4. Traffic light window controls
+5. IDE interface (sidebar, editor, headers)
+6. Floating terminal overlay with your output
+7. Screen glare and stand
+
+Downloads as a full-resolution PNG suitable for assignment submission.
+
+### Floating Console — Touch Support
+
+The console uses the **Pointer Events API** exclusively:
+```jsx
+onPointerDown  → setPointerCapture  // locks pointer to element
+onPointerMove  → updates position   // works on touch AND mouse
+onPointerUp    → releaseCapture     // ends drag/resize
+```
+
+When idle, `pointer-events: none` ensures the console **never blocks the editor** underneath. It becomes interactive on hover or touch.
+
+### Monaco Mobile Fixes
 
 ```js
-const BASE_CODE = `#include <iostream>
-// ... your template here
+contextmenu:              false,   // Prevents native Android context menu
+quickSuggestions:         false,   // Prevents IntelliSense blocking touch keyboard
+parameterHints:           { enabled: false },
+acceptSuggestionOnEnter:  "off",
+```
+
+### 11-Stage Mutation Engine
+
+| Stage | Transformation |
+|---|---|
+| 1 | Variable name pool substitution |
+| 2 | PI constant jitter (`acos(-1.0)`, `4.0*atan(1.0)`, etc.) |
+| 3 | `for` → `while` loop transformation |
+| 4 | `if-else` grade chain → `switch-case` |
+| 5 | Noise struct injection (before first function) |
+| 6 | Dead helper function injection (before `main`) |
+| 7 | Dead-code block inside `main` |
+| 8 | Comment mutation |
+| 9 | Build token header embedding |
+| 10 | Session seed / stack probe dead-code variants |
+| 11 | Random junk lambda/branch insertion |
+
+---
+
+## 🔧 Customisation
+
+### Default Code Template
+
+Edit `DEFAULT_CODE` in `app/page.js`:
+
+```js
+const DEFAULT_CODE = `#include <iostream>
+using namespace std;
+
 int main() {
-    // Student info is auto-injected here
+    // your template here
     return 0;
 }`;
 ```
 
-### Adding Mutation Pools
+### Adding a 4th Theme
 
-Extend `VAR_POOLS` in `lib/mutationEngine.js` to add more variable substitution targets:
+1. Add entry to `THEMES` in `components/ThemeProvider.jsx`
+2. Add Monaco theme definition in `components/Editor.jsx`
+3. If it should use the Classic layout, set `isClassic: true`
 
-```js
-const VAR_POOLS = {
-  myVariable: ["altName1", "altName2", "altName3"],
-  // ...
-};
+### Self-Hosted Judge0
+
+```bash
+# docker-compose.yml — uncomment the judge0 service section, then:
+export JUDGE0_URL=http://your-vps-ip:2358
+docker-compose up -d
 ```
-
-### Adding a New Theme
-
-Add a new entry to `THEMES` in `components/ThemeProvider.jsx`:
-
-```js
-export const THEMES = {
-  myTheme: {
-    id: "myTheme",
-    label: "My Custom Theme",
-    icon: "🎨",
-    font: "'JetBrains Mono', monospace",
-    monacoTheme: "vs-dark",
-    colors: {
-      bg: "#...",
-      // ... all required color keys
-    },
-    glassClass: "glass-dark",
-  },
-};
-```
-
-Then define the corresponding Monaco theme in `components/Editor.jsx`.
-
----
-
-## 🧪 Testing the Mutation Engine
-
-You can test the mutation engine in isolation:
-
-```js
-import { mutateCode } from "@/lib/mutationEngine";
-
-const { code, token, mutations } = mutateCode(sourceCode, "Alice", "CS001");
-console.log("Applied mutations:", mutations);
-```
-
----
-
-## 📦 Key Dependencies
-
-| Package | Purpose |
-|---|---|
-| `next` 14 | React framework with App Router |
-| `@monaco-editor/react` | VS Code-grade editor component |
-| `framer-motion` | Floating console drag/animation |
-| `lucide-react` | Icon system |
-| `jspdf` + `jspdf-autotable` | PDF report generation |
-| `clsx` + `tailwind-merge` | Conditional class utilities |
-
----
-
-## ⚖️ License
-
-MIT © Dev-Cloud Pro
 
 ---
 
 ## 🐛 Troubleshooting
 
-**Monaco Editor not loading?**
-- Ensure `reactStrictMode: false` is set in `next.config.js` (prevents double-mount issues)
-- Monaco must be dynamically imported with `{ ssr: false }`
+| Issue | Fix |
+|---|---|
+| `Module not found: @/components/…` | Ensure `jsconfig.json` is at project root; restart dev server |
+| Monaco not loading | Confirm `reactStrictMode: false` in `next.config.js` |
+| Console blocks editor on mobile | Confirm `pointer-events: none` on `.console-idle` in `globals.css` |
+| PDF fails to generate | `jspdf` must be dynamically imported inside async function (already done in `pdfExport.js`) |
+| Docker build fails | Ensure Node 18+ base image; check `output: "standalone"` in `next.config.js` |
+| Judge0 CORS error | App auto-falls back to simulation; for production use self-hosted Judge0 |
 
-**Judge0 CORS error?**
-- The app automatically falls back to simulation mode
-- For production, self-host Judge0 CE and set `NEXT_PUBLIC_JUDGE0_URL`
+---
 
-**PDF export not working?**
-- `jspdf` must be imported dynamically inside an async function (handled in `lib/pdfExport.js`)
-- Ensure you've clicked Execute at least once to populate console output
+## 📦 Dependencies
 
-**Build errors with Monaco?**
-- Run `npm install` again to ensure `monaco-editor` peer dep is installed
-- Clear `.next` cache: `rm -rf .next && npm run dev`
+| Package | Version | Purpose |
+|---|---|---|
+| `next` | 14.2.5 | Framework + App Router |
+| `@monaco-editor/react` | ^4.6.0 | VS Code editor component |
+| `framer-motion` | ^11.3.21 | Floating console animations |
+| `lucide-react` | ^0.408.0 | Icon system |
+| `jspdf` + `jspdf-autotable` | ^2.5 | PDF report generation |
+| `clsx` + `tailwind-merge` | latest | Class utilities |
+
+---
+
+## ⚖️ License
+
+MIT © Dev-Cloud Pro v3

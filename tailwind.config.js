@@ -1,70 +1,65 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./app/**/*.{js,jsx,ts,tsx}",
-    "./components/**/*.{js,jsx,ts,tsx}",
-    "./hooks/**/*.{js,jsx,ts,tsx}",
+    "./app/**/*.{js,jsx}",
+    "./components/**/*.{js,jsx}",
+    "./hooks/**/*.{js,jsx}",
   ],
   theme: {
     extend: {
       fontFamily: {
-        mono: ["'JetBrains Mono'", "'Fira Code'", "'Cascadia Code'", "Consolas", "monospace"],
-        sans: ["'Inter'", "system-ui", "sans-serif"],
+        mono: ["'JetBrains Mono'", "'Cascadia Code'", "'Fira Code'", "Consolas", "monospace"],
+        classic: ["'Tahoma'", "'Segoe UI'", "Arial", "sans-serif"],
+        system: ["'Segoe UI'", "Tahoma", "Geneva", "Verdana", "sans-serif"],
       },
       colors: {
-        // Classic Dev-C++ 5.11 (Light)
-        classic: {
+        win: {
           bg: "#ece9d8",
           sidebar: "#d4d0c8",
-          header: "#0a246a",
-          editor: "#ffffff",
-          console: "#000080",
-          accent: "#0a246a",
-          border: "#999999",
-          text: "#000000",
-          label: "#333333",
-          muted: "#777777",
+          border: "#919b9c",
+          text: "#000",
+          blue: "#0a246a",
+          bluegrad: "#3169c4",
+          inset: "#808080",
+          raised: "#fff",
         },
-        // Midnight Engineering (Dark)
-        midnight: {
+        mid: {
           bg: "#0d1117",
           sidebar: "#161b22",
-          header: "#161b22",
-          editor: "#0d1117",
-          console: "#010409",
           accent: "#58a6ff",
-          border: "#30363d",
           text: "#c9d1d9",
-          label: "#8b949e",
-          muted: "#484f58",
+          border: "#30363d",
+          console: "#010409",
+          ok: "#3fb950",
+          err: "#f85149",
         },
-        // Neon Hacker
         neon: {
           bg: "#080810",
           sidebar: "#0d0d1a",
-          header: "#0d0d1a",
-          editor: "#080810",
-          console: "#080810",
           accent: "#00ff88",
-          border: "#00ff8833",
           text: "#d0d0ff",
-          label: "#667799",
-          muted: "#334466",
+          border: "#00ff8833",
+          console: "#080810",
+          ok: "#00ff88",
+          err: "#ff4466",
         },
+      },
+      boxShadow: {
+        "win-raised": "inset -1px -1px 0 #808080, inset 1px 1px 0 #dfdfdf, inset -2px -2px 0 #404040, inset 2px 2px 0 #fff",
+        "win-inset": "inset 1px 1px 0 #808080, inset -1px -1px 0 #dfdfdf, inset 2px 2px 0 #404040, inset -2px -2px 0 #fff",
+        "win-btn": "inset -1px -1px 0 #808080, inset 1px 1px 0 #fff",
+        "win-btn-active": "inset 1px 1px 0 #808080, inset -1px -1px 0 #fff",
+        "mac-frame": "0 40px 120px rgba(0,0,0,0.85), 0 0 0 1px rgba(255,255,255,0.08)",
       },
       animation: {
-        "pulse-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
-        "spin-slow": "spin 2s linear infinite",
-        "flicker": "flicker 0.15s infinite",
+        "cursor-blink": "blink 1s step-end infinite",
+        "fade-in": "fadeIn 0.2s ease",
+        "slide-up": "slideUp 0.25s ease",
       },
       keyframes: {
-        flicker: {
-          "0%, 100%": { opacity: 1 },
-          "50%": { opacity: 0 },
-        },
-      },
-      backdropBlur: {
-        xs: "2px",
+        blink: { "0%,100%": { opacity: 1 }, "50%": { opacity: 0 } },
+        fadeIn: { from: { opacity: 0 }, to: { opacity: 1 } },
+        slideUp: { from: { opacity: 0, transform: "translateY(8px)" }, to: { opacity: 1, transform: "translateY(0)" } },
       },
     },
   },

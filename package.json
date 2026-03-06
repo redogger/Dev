@@ -1,12 +1,12 @@
 {
-  "name": "dev-cloud-pro",
-  "version": "2.0.0",
-  "description": "Dev-Cloud Pro — Professional Online C++ IDE with Mutation Engine",
+  "name": "dev-cloud-pro-v3",
+  "version": "3.0.0",
+  "description": "Dev-Cloud Pro v3 — Pixel-perfect Dev-C++ 5.11 + Modern IDE with MacBook Export",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p ${PORT:-3000}",
     "lint": "next lint"
   },
   "dependencies": {
@@ -28,5 +28,8 @@
     "eslint-config-next": "14.2.5",
     "postcss": "^8.4.40",
     "tailwindcss": "^3.4.7"
+  },
+  "engines": {
+    "node": ">=18.17.0"
   }
 }

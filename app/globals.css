@@ -1,203 +1,201 @@
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* ───────────────────────────────────────────
-   ROOT & RESET
-─────────────────────────────────────────── */
-:root {
-  --console-width: 680px;
-  --console-height: 340px;
+/* ═══════════════════════════════════════════════
+   BASE
+═══════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; -webkit-tap-highlight-color: transparent; }
+body { touch-action: manipulation; }
+
+/* ═══════════════════════════════════════════════
+   SCROLLBARS
+═══════════════════════════════════════════════ */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { border-radius: 3px; background: rgba(128,128,128,0.4); }
+::-webkit-scrollbar-thumb:hover { background: rgba(128,128,128,0.65); }
+
+/* Classic scrollbars */
+.classic-scroll::-webkit-scrollbar { width: 16px; height: 16px; }
+.classic-scroll::-webkit-scrollbar-track { background: #d4d0c8; border: 1px solid #919b9c; }
+.classic-scroll::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #e0ddd4, #b8b4ac);
+  border: 1px solid #919b9c;
+  box-shadow: inset 1px 1px 0 #fff, inset -1px -1px 0 #808080;
 }
 
-*, *::before, *::after {
-  box-sizing: border-box;
+/* ═══════════════════════════════════════════════
+   WINDOWS XP / DEV-C++ 3D EFFECTS
+═══════════════════════════════════════════════ */
+.win-raised {
+  box-shadow:
+    inset -1px -1px 0 #808080,
+    inset  1px  1px 0 #dfdfdf,
+    inset -2px -2px 0 #404040,
+    inset  2px  2px 0 #ffffff;
+}
+.win-inset {
+  box-shadow:
+    inset  1px  1px 0 #808080,
+    inset -1px -1px 0 #dfdfdf,
+    inset  2px  2px 0 #404040,
+    inset -2px -2px 0 #ffffff;
+}
+.win-btn {
+  box-shadow: inset -1px -1px 0 #808080, inset 1px 1px 0 #ffffff;
+  background: #d4d0c8;
+  cursor: default;
+  border: 1px solid #919b9c;
+  user-select: none;
+}
+.win-btn:hover { background: #ddd9d0; }
+.win-btn:active {
+  box-shadow: inset 1px 1px 0 #808080, inset -1px -1px 0 #ffffff;
+}
+.win-btn:disabled { opacity: 0.5; pointer-events: none; }
+
+.win-header {
+  background: linear-gradient(180deg, #3169c4 0%, #1242b1 60%, #0a246a 100%);
+}
+.win-header-inactive {
+  background: linear-gradient(180deg, #7a96df 0%, #3a6ec8 100%);
 }
 
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
+.win-menu-item {
+  padding: 1px 6px;
+  font-size: 11px;
+  font-family: Tahoma, 'Segoe UI', sans-serif;
+  color: #000;
+  user-select: none;
+  cursor: default;
+  white-space: nowrap;
+}
+.win-menu-item:hover {
+  background: #0a246a;
+  color: #fff;
 }
 
-/* ───────────────────────────────────────────
-   CUSTOM SCROLLBARS
-─────────────────────────────────────────── */
-::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
-}
-::-webkit-scrollbar-track {
+.win-toolbar-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 24px;
+  border: 1px solid transparent;
   background: transparent;
+  cursor: default;
+  font-size: 14px;
+  border-radius: 0;
+  flex-shrink: 0;
 }
-::-webkit-scrollbar-thumb {
-  border-radius: 3px;
-  background: rgba(120, 120, 120, 0.35);
+.win-toolbar-btn:hover {
+  border-color: #919b9c;
+  box-shadow: inset -1px -1px 0 #808080, inset 1px 1px 0 #fff;
+  background: #d4d0c8;
 }
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(120, 120, 120, 0.6);
-}
-
-/* ───────────────────────────────────────────
-   GLASSMORPHISM UTILITY
-─────────────────────────────────────────── */
-.glass {
-  backdrop-filter: blur(18px) saturate(180%);
-  -webkit-backdrop-filter: blur(18px) saturate(180%);
+.win-toolbar-btn:active {
+  box-shadow: inset 1px 1px 0 #808080, inset -1px -1px 0 #fff;
 }
 
-.glass-dark {
+.win-tab {
+  padding: 2px 10px 2px;
+  font-size: 11px;
+  font-family: Tahoma, sans-serif;
+  background: #d4d0c8;
+  border: 1px solid #919b9c;
+  border-bottom: none;
+  cursor: default;
+  user-select: none;
+  margin-right: -1px;
+  position: relative;
+}
+.win-tab-active {
+  background: #ece9d8;
+  border-bottom: 1px solid #ece9d8;
+  font-weight: bold;
+  z-index: 1;
+}
+
+.win-separator { width: 1px; height: 18px; background: #919b9c; margin: 0 2px; }
+.win-separator-after { width: 2px; height: 18px; background: linear-gradient(to right, #808080, #fff); margin: 0 2px; }
+
+/* ═══════════════════════════════════════════════
+   GLASSMORPHISM — Modern themes
+═══════════════════════════════════════════════ */
+.glass-midnight {
   backdrop-filter: blur(24px) saturate(160%);
   -webkit-backdrop-filter: blur(24px) saturate(160%);
-  background: rgba(13, 17, 23, 0.82);
-  border: 1px solid rgba(88, 166, 255, 0.12);
+  background: rgba(13, 17, 23, 0.88);
+  border: 1px solid rgba(88, 166, 255, 0.15);
+  box-shadow: 0 24px 48px rgba(0,0,0,0.6), 0 0 0 1px rgba(88,166,255,0.06);
 }
-
 .glass-neon {
   backdrop-filter: blur(20px) saturate(200%);
   -webkit-backdrop-filter: blur(20px) saturate(200%);
-  background: rgba(8, 8, 16, 0.88);
-  border: 1px solid rgba(0, 255, 136, 0.2);
-  box-shadow: 0 0 30px rgba(0, 255, 136, 0.08), inset 0 0 30px rgba(0, 255, 136, 0.03);
+  background: rgba(8, 8, 16, 0.92);
+  border: 1px solid rgba(0, 255, 136, 0.22);
+  box-shadow: 0 0 40px rgba(0,255,136,0.1), 0 24px 48px rgba(0,0,0,0.8), inset 0 0 30px rgba(0,255,136,0.02);
 }
 
-.glass-classic {
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  background: rgba(236, 233, 216, 0.90);
-  border: 2px solid rgba(10, 36, 106, 0.35);
-  box-shadow: 3px 3px 0 rgba(0,0,0,0.15), inset 1px 1px 0 rgba(255,255,255,0.6);
-}
-
-/* ───────────────────────────────────────────
-   NEON GLOW UTILITIES
-─────────────────────────────────────────── */
-.neon-glow {
-  text-shadow: 0 0 8px currentColor, 0 0 20px currentColor;
-}
-
-.neon-border {
-  box-shadow: 0 0 0 1px #00ff8844, 0 0 12px #00ff8820, inset 0 0 12px #00ff8806;
-}
-
-.neon-btn-glow {
-  box-shadow: 0 0 10px #00ff8855, 0 0 30px #00ff8822;
-}
-
-/* ───────────────────────────────────────────
-   CLASSIC WINDOWS-STYLE UTILITIES
-─────────────────────────────────────────── */
-.classic-inset {
-  box-shadow: inset 1px 1px 0 #fff, inset -1px -1px 0 #808080, inset 2px 2px 0 #dfdfdf, inset -2px -2px 0 #404040;
-}
-
-.classic-raised {
-  box-shadow: 1px 1px 0 #fff, -1px -1px 0 #808080, 2px 2px 0 #dfdfdf, -2px -2px 0 #404040;
-}
-
-.classic-btn {
-  box-shadow: inset -1px -1px 0 #808080, inset 1px 1px 0 #dfdfdf;
-}
-
-/* ───────────────────────────────────────────
-   FLOATING CONSOLE DRAG HANDLE
-─────────────────────────────────────────── */
-.drag-handle {
-  cursor: grab;
-  user-select: none;
-}
-.drag-handle:active {
-  cursor: grabbing;
-}
-
-/* ───────────────────────────────────────────
-   CONSOLE TYPEWRITER CURSOR
-─────────────────────────────────────────── */
-.console-cursor::after {
+/* ═══════════════════════════════════════════════
+   CONSOLE CURSOR BLINK
+═══════════════════════════════════════════════ */
+.cursor-blink::after {
   content: '█';
-  animation: flicker 0.8s step-end infinite;
-  opacity: 0.8;
+  animation: blink 1s step-end infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+/* ═══════════════════════════════════════════════
+   FLOATING CONSOLE — non-blocking when idle
+═══════════════════════════════════════════════ */
+.console-idle { pointer-events: none; }
+.console-active { pointer-events: auto; }
+
+/* ═══════════════════════════════════════════════
+   MODAL OVERLAY
+═══════════════════════════════════════════════ */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(4px);
+  z-index: 9000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.18s ease;
+}
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+
+/* ═══════════════════════════════════════════════
+   MOBILE TOUCH OPTIMIZATIONS
+═══════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .win-toolbar-btn { width: 36px; height: 36px; font-size: 18px; }
+  .win-menu-item { padding: 6px 12px; font-size: 14px; }
+  .win-tab { padding: 6px 12px; font-size: 13px; }
 }
 
-@keyframes flicker {
-  0%, 100% { opacity: 0.8; }
-  50% { opacity: 0; }
-}
+/* ═══════════════════════════════════════════════
+   STATUS PULSE
+═══════════════════════════════════════════════ */
+@keyframes pulse-ok { 0%,100%{box-shadow:0 0 0 0 rgba(63,185,80,0.5)} 50%{box-shadow:0 0 0 4px rgba(63,185,80,0)} }
+.pulse-ok { animation: pulse-ok 2s ease-in-out infinite; }
 
-/* ───────────────────────────────────────────
-   RESIZE HANDLE
-─────────────────────────────────────────── */
-.resize-handle {
-  cursor: se-resize;
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 16px;
-  height: 16px;
-  z-index: 10;
-}
+/* Neon glow */
+.neon-text { text-shadow: 0 0 8px currentColor, 0 0 20px currentColor; }
+.neon-border { box-shadow: 0 0 0 1px #00ff8844, 0 0 12px #00ff8818; }
 
-/* ───────────────────────────────────────────
-   MONACO EDITOR OVERRIDE
-─────────────────────────────────────────── */
-.monaco-editor .margin {
-  background: transparent !important;
-}
+/* Theme transition */
+.theme-tx { transition: background 0.2s ease, border-color 0.2s ease, color 0.15s ease; }
 
-/* ───────────────────────────────────────────
-   SIDEBAR INPUT FOCUS RING
-─────────────────────────────────────────── */
-.sidebar-input:focus {
-  outline: none;
-  ring: 2px;
-}
+/* MacBook frame canvas */
+#mac-export-canvas { display: block; max-width: 100%; height: auto; }
 
-/* ───────────────────────────────────────────
-   STATUS INDICATOR PULSE
-─────────────────────────────────────────── */
-.status-ok {
-  animation: pulse-green 2s ease-in-out infinite;
-}
-
-@keyframes pulse-green {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(63, 185, 80, 0.4); }
-  50% { box-shadow: 0 0 0 5px rgba(63, 185, 80, 0); }
-}
-
-/* ───────────────────────────────────────────
-   THEME TRANSITION
-─────────────────────────────────────────── */
-.theme-transition {
-  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.2s ease;
-}
-
-/* ───────────────────────────────────────────
-   TOOLTIP
-─────────────────────────────────────────── */
-[data-tooltip] {
-  position: relative;
-}
-[data-tooltip]::before {
-  content: attr(data-tooltip);
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(0, 0, 0, 0.85);
-  color: #fff;
-  font-size: 10px;
-  padding: 3px 7px;
-  border-radius: 4px;
-  white-space: nowrap;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.15s;
-  margin-bottom: 4px;
-  font-family: 'JetBrains Mono', monospace;
-}
-[data-tooltip]:hover::before {
-  opacity: 1;
-}
+/* Drag handle */
+.drag-handle { touch-action: none; user-select: none; -webkit-user-select: none; }

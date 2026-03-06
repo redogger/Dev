@@ -1,50 +1,23 @@
 "use client";
-
 import { useState, useCallback, useRef } from "react";
 
-const JUDGE0_URL = "https://ce.judge0.com";
-const LANGUAGE_ID = 54; // C++ (GCC 11.2)
-const MAX_POLL = 20;
-const POLL_INTERVAL_MS = 1200;
+const JUDGE0 = process.env.NEXT_PUBLIC_JUDGE0_URL || "https://ce.judge0.com";
+const LANG_ID = 54; // C++17 GCC 11.2
+const MAX_POLLS = 20;
+const POLL_MS = 1200;
 
-// ─── Base64 helpers ───────────────────────────────────────────────────────────
-const b64encode = (str) => {
-  try {
-    return btoa(unescape(encodeURIComponent(str)));
-  } catch {
-    return btoa(str);
-  }
-};
+const b64e = (s) => { try { return btoa(unescape(encodeURIComponent(s))); } catch { return btoa(s); } };
+const b64d = (s) => { if (!s) return ""; try { return decodeURIComponent(escape(atob(s))); } catch { try { return atob(s); } catch { return s; } } };
 
-const b64decode = (str) => {
-  if (!str) return "";
-  try {
-    return decodeURIComponent(escape(atob(str)));
-  } catch {
-    try { return atob(str); } catch { return str; }
-  }
-};
-
-// ─── Simulated execution (offline / CORS fallback) ────────────────────────────
-function simulateExecution(code, studentName, studentId) {
-  const n = studentName?.trim() || "Student";
-  const i = studentId?.trim() || "000000";
-
-  // Try to detect if student metadata was injected
-  const hasInjection = code.includes(`"${n}"`) && code.includes(`"${i}"`);
-
-  const lines = [
-    `[Dev-Cloud Pro] ✓ Simulated Execution (offline mode)`,
+function simulate(code, name, id) {
+  const n = name?.trim() || "Student";
+  const i = id?.trim()   || "000000";
+  return [
+    `[Dev-Cloud Pro v3] ✓ Simulated Execution`,
     `${"─".repeat(44)}`,
-  ];
-
-  if (hasInjection) {
-    lines.push(`Student: ${n}`);
-    lines.push(`ID: ${i}`);
-    lines.push(`${"─".repeat(44)}`);
-  }
-
-  lines.push(
+    `Name: ${n}`,
+    `ID: ${i}`,
+    `${"─".repeat(44)}`,
     `=== Circle Metrics ===`,
     `Radius        : 7.5`,
     `Area          : 176.715`,
@@ -60,130 +33,64 @@ function simulateExecution(code, studentName, studentId) {
     `=== Prime Check ===`,
     `17 is prime: Yes`,
     ``,
-    `[Process exited with code 0]`
-  );
-
-  return lines.join("\n");
+    `[Process exited with code 0]`,
+  ].join("\n");
 }
 
-// ─── Hook ─────────────────────────────────────────────────────────────────────
 export function useCodeRunner() {
-  const [output, setOutput] = useState(
-    "▶  Enter your Name & ID, click [Build & Execute] to start.\n"
-  );
-  const [isRunning, setIsRunning] = useState(false);
-  const abortRef = useRef(false);
+  const [output, setOutput]   = useState("▶  Click [Build & Execute] to compile and run.\n");
+  const [isRunning, setRunning] = useState(false);
+  const aborted = useRef(false);
 
-  const append = useCallback((text) => {
-    setOutput((prev) => prev + text + "\n");
-  }, []);
+  const clearOutput = useCallback(() => setOutput(""), []);
 
-  const clearOutput = useCallback(() => {
-    setOutput("");
-  }, []);
+  const executeCode = useCallback(async (code, name = "", id = "") => {
+    if (isRunning) return;
+    aborted.current = false;
+    setRunning(true);
+    setOutput("[Dev-Cloud Pro v3 Runtime]\n");
+    const log = (m) => { if (!aborted.current) setOutput(p => p + m + "\n"); };
 
-  const executeCode = useCallback(
-    async (code, studentName = "", studentId = "") => {
-      if (isRunning) return;
-      abortRef.current = false;
-      setIsRunning(true);
-      setOutput("[Dev-Cloud Pro Runtime]\n");
+    try {
+      log(`> Connecting to Judge0 CE…`);
+      const res = await fetch(`${JUDGE0}/submissions?base64_encoded=true&wait=false`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ language_id: LANG_ID, source_code: b64e(code), cpu_time_limit: 5, memory_limit: 131072 }),
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const { token } = await res.json();
+      log(`> Token: ${token}`);
+      log(`> Compiling…`);
 
-      const log = (msg) => {
-        if (!abortRef.current) setOutput((p) => p + msg + "\n");
-      };
-
-      try {
-        // ── Submit to Judge0 ────────────────────────────────────────────────
-        log(`> Connecting to Judge0 CE (ce.judge0.com)…`);
-
-        const submitRes = await fetch(
-          `${JUDGE0_URL}/submissions?base64_encoded=true&wait=false`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              language_id: LANGUAGE_ID,
-              source_code: b64encode(code),
-              cpu_time_limit: 5,
-              memory_limit: 128000,
-            }),
-          }
-        );
-
-        if (!submitRes.ok) throw new Error(`Submit failed: ${submitRes.status}`);
-        const { token } = await submitRes.json();
-        log(`> Submission token: ${token}`);
-        log(`> Awaiting compilation & execution…`);
-
-        // ── Poll for result ─────────────────────────────────────────────────
-        let attempts = 0;
-        while (attempts < MAX_POLL) {
-          if (abortRef.current) break;
-          await new Promise((r) => setTimeout(r, POLL_INTERVAL_MS));
-          attempts++;
-
-          const pollRes = await fetch(
-            `${JUDGE0_URL}/submissions/${token}?base64_encoded=true&fields=status,stdout,stderr,compile_output,time,memory`
-          );
-          const data = await pollRes.json();
-          const statusId = data.status?.id;
-
-          // Still in queue / processing
-          if (statusId <= 2) {
-            log(`> Status: ${data.status?.description || "Processing"} [${attempts}/${MAX_POLL}]`);
-            continue;
-          }
-
-          // ── Handle result ─────────────────────────────────────────────────
-          const stdout = b64decode(data.stdout);
-          const stderr = b64decode(data.stderr);
-          const compileOut = b64decode(data.compile_output);
-          const time = data.time ? `${data.time}s` : "—";
-          const mem = data.memory ? `${(data.memory / 1024).toFixed(1)} KB` : "—";
-
-          if (statusId === 3) {
-            // Accepted
-            setOutput(
-              `[Dev-Cloud Pro Runtime] ✓ Execution successful\n` +
-              `Time: ${time}  |  Memory: ${mem}\n` +
-              `${"─".repeat(44)}\n` +
-              stdout
-            );
-          } else {
-            // Error
-            const errMsg = compileOut || stderr || data.status?.description || "Unknown error";
-            setOutput(
-              `[Dev-Cloud Pro Runtime] ✗ ${data.status?.description || "Error"}\n` +
-              `${"─".repeat(44)}\n` +
-              errMsg
-            );
-          }
-
-          setIsRunning(false);
-          return;
+      for (let i = 0; i < MAX_POLLS; i++) {
+        if (aborted.current) break;
+        await new Promise(r => setTimeout(r, POLL_MS));
+        const poll = await fetch(`${JUDGE0}/submissions/${token}?base64_encoded=true&fields=status,stdout,stderr,compile_output,time,memory`);
+        const d = await poll.json();
+        if (d.status?.id <= 2) { log(`> ${d.status?.description} [${i+1}/${MAX_POLLS}]`); continue; }
+        const stdout = b64d(d.stdout);
+        const stderr = b64d(d.stderr) || b64d(d.compile_output);
+        if (d.status?.id === 3) {
+          setOutput(`[Dev-Cloud Pro v3] ✓ Execution successful | Time: ${d.time}s | Mem: ${((d.memory||0)/1024).toFixed(1)}KB\n${"─".repeat(44)}\n${stdout}`);
+        } else {
+          setOutput(`[Dev-Cloud Pro v3] ✗ ${d.status?.description}\n${"─".repeat(44)}\n${stderr}`);
         }
-
-        // Timeout
-        log(`\n⚠  Execution timed out after ${MAX_POLL} polls.`);
-        setIsRunning(false);
-      } catch (err) {
-        // ── Offline / CORS fallback ─────────────────────────────────────────
-        console.warn("[useCodeRunner] Judge0 unavailable, using simulation:", err.message);
-        await new Promise((r) => setTimeout(r, 900));
-        if (!abortRef.current) {
-          setOutput(simulateExecution(code, studentName, studentId));
-        }
-        setIsRunning(false);
+        setRunning(false); return;
       }
-    },
-    [isRunning]
-  );
+      log("⚠ Timeout");
+    } catch (e) {
+      console.warn("[Judge0 fallback]", e.message);
+      await new Promise(r => setTimeout(r, 800));
+      if (!aborted.current) setOutput(simulate(code, name, id));
+    }
+    setRunning(false);
+  }, [isRunning]);
 
   const abort = useCallback(() => {
-    abortRef.current = true;
-    setIsRunning(false);
-    setOutput((p) => p + "\n[Aborted by user]");
+    aborted.current = true;
+    setRunning(false);
+    setOutput(p => p + "\n[Aborted]");
   }, []);
 
   return { output, isRunning, executeCode, clearOutput, abort };

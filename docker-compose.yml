@@ -1,0 +1,36 @@
+version: "3.9"
+
+services:
+  dev-cloud:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_JUDGE0_URL: ${JUDGE0_URL:-https://ce.judge0.com}
+    container_name: dev-cloud-pro-v3
+    ports:
+      - "${HOST_PORT:-3000}:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_JUDGE0_URL=${JUDGE0_URL:-https://ce.judge0.com}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.devcloud.rule=Host(`your-domain.com`)"
+      - "traefik.http.routers.devcloud.entrypoints=websecure"
+      - "traefik.http.routers.devcloud.tls.certresolver=letsencrypt"
+
+  # Optional: Self-hosted Judge0 CE for private execution
+  # judge0:
+  #   image: judge0/judge0:1.13.1
+  #   ports:
+  #     - "2358:2358"
+  #   environment:
+  #     - REDIS_PASSWORD=your_redis_pass
+  #   restart: unless-stopped

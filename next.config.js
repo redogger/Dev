@@ -1,11 +1,19 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: false, // Disable to avoid double-mount issues with Monaco
-  webpack: (config) => {
-    // Monaco Editor worker configuration
-    config.resolve.alias = {
-      ...config.resolve.alias,
-    };
+  reactStrictMode: false,
+  output: "standalone", // Required for Docker minimal image
+  experimental: {
+    optimizePackageImports: ["lucide-react"],
+  },
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      // Monaco worker shim for browser
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        path: false,
+      };
+    }
     return config;
   },
 };
