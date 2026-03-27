@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>إعدادات Auto Interactor Pro</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f5f6fa;
+      color: #333;
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 30px;
+      border-radius: 10px;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+    
+    .header h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+    
+    .header p {
+      opacity: 0.9;
+    }
+    
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #ddd;
+      padding-bottom: 10px;
+    }
+    
+    .tab-btn {
+      padding: 12px 24px;
+      background: white;
+      border: 2px solid #667eea;
+      color: #667eea;
+      border-radius: 8px 8px 0 0;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    
+    .tab-btn:hover {
+      background: #f8f9fa;
+    }
+    
+    .tab-btn.active {
+      background: #667eea;
+      color: white;
+    }
+    
+    .tab-content {
+      display: none;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+    
+    .section {
+      margin-bottom: 30px;
+    }
+    
+    .section h2 {
+      color: #667eea;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #f0f0f0;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #555;
+    }
+    
+    .form-group input[type="text"],
+    .form-group input[type="number"],
+    .form-group input[type="url"],
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e0e0e0;
+      border-radius: 6px;
+      font-size: 14px;
+      transition: border-color 0.3s ease;
+    }
+    
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+    
+    .form-group textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+    
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-right: 10px;
+      margin-bottom: 10px;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+    
+    .btn-success {
+      background: #28a745;
+      color: white;
+    }
+    
+    .btn-success:hover {
+      background: #218838;
+    }
+    
+    .btn-danger {
+      background: #dc3545;
+      color: white;
+    }
+    
+    .btn-danger:hover {
+      background: #c82333;
+    }
+    
+    .btn-secondary {
+      background: #6c757d;
+      color: white;
+    }
+    
+    .btn-secondary:hover {
+      background: #5a6268;
+    }
+    
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 30px;
+    }
+    
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+      border-radius: 30px;
+    }
+    
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 22px;
+      width: 22px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+    
+    input:checked + .slider {
+      background-color: #667eea;
+    }
+    
+    input:checked + .slider:before {
+      transform: translateX(30px);
+    }
+    
+    .rule-card {
+      background: #f8f9fa;
+      border: 2px solid #e9ecef;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 15px;
+    }
+    
+    .rule-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    
+    .rule-card-title {
+      font-weight: 600;
+      color: #333;
+    }
+    
+    .rules-list {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+    
+    .info-box {
+      background: #e7f3ff;
+      border-right: 4px solid #667eea;
+      padding: 15px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+    }
+    
+    .info-box h4 {
+      color: #667eea;
+      margin-bottom: 10px;
+    }
+    
+    .info-box ul {
+      margin-right: 20px;
+    }
+    
+    .info-box li {
+      margin-bottom: 5px;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+    
+    th, td {
+      padding: 12px;
+      text-align: right;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    
+    th {
+      background: #f8f9fa;
+      font-weight: 600;
+      color: #555;
+    }
+    
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .checkbox-group input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>⚙️ إعدادات Auto Interactor Pro</h1>
+      <p>تخصيص سلوك الإضافة وإدارة القواعد التلقائية</p>
+    </div>
+    
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="general">📋 عام</button>
+      <button class="tab-btn" data-tab="rules">🎯 القواعد</button>
+      <button class="tab-btn" data-tab="tasks">⏰ المهام</button>
+      <button class="tab-btn" data-tab="monitoring">👁️ المراقبة</button>
+      <button class="tab-btn" data-tab="logs">📜 السجلات</button>
+    </div>
+    
+    <!-- General Tab -->
+    <div class="tab-content active" id="general">
+      <div class="section">
+        <h2>الإعدادات العامة</h2>
+        
+        <div class="info-box">
+          <h4>ℹ️ معلومات</h4>
+          <p>هذه الإعدادات تتحكم في السلوك العام للإضافة. يمكنك تمكين أو تعطيل الميزات حسب الحاجة.</p>
+        </div>
+        
+        <div class="form-group">
+          <label>تمكين الإضافة</label>
+          <div class="checkbox-group">
+            <label class="toggle-switch">
+              <input type="checkbox" id="enabled">
+              <span class="slider"></span>
+            </label>
+            <span>تشغيل/إيقاف جميع الوظائف التلقائية</span>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label>فترة المهام الدورية (دقائق)</label>
+          <input type="number" id="taskInterval" min="1" max="60" value="5">
+        </div>
+        
+        <div class="form-group">
+          <label>مراقبة جميع الإطارات</label>
+          <div class="checkbox-group">
+            <label class="toggle-switch">
+              <input type="checkbox" id="monitorAllFrames">
+              <span class="slider"></span>
+            </label>
+            <span>تطبيق القواعد على الإطارات الفرعية أيضاً</span>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label>تمكين التسجيل</label>
+          <div class="checkbox-group">
+            <label class="toggle-switch">
+              <input type="checkbox" id="enableLogging">
+              <span class="slider"></span>
+            </label>
+            <span>تسجيل جميع الأحداث للتتبع</span>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label>الحد الأقصى لإعادة المحاولة</label>
+          <input type="number" id="maxRetries" min="0" max="10" value="3">
+        </div>
+        
+        <div class="form-group">
+          <label>تأخير إعادة المحاولة (مللي ثانية)</label>
+          <input type="number" id="retryDelay" min="500" max="10000" value="2000">
+        </div>
+      </div>
+      
+      <button class="btn btn-primary" id="saveGeneral">💾 حفظ الإعدادات</button>
+    </div>
+    
+    <!-- Rules Tab -->
+    <div class="tab-content" id="rules">
+      <div class="section">
+        <h2>إدارة القواعد التلقائية</h2>
+        
+        <div class="info-box">
+          <h4>ℹ️ إنشاء قاعدة جديدة</h4>
+          <ul>
+            <li>حدد نمط URL لتطبيق القاعدة عليه</li>
+            <li>أضف إجراءات متعددة (نقر، ملء، استخراج...)</li>
+            <li>استخدم CSS Selectors أو XPath لتحديد العناصر</li>
+          </ul>
+        </div>
+        
+        <div class="form-group">
+          <label>اسم القاعدة</label>
+          <input type="text" id="ruleName" placeholder="مثال: نقر تلقائي على زر التسجيل">
+        </div>
+        
+        <div class="form-group">
+          <label>نمط URL</label>
+          <input type="text" id="ruleUrlPattern" placeholder="مثال: *example.com* أو /.*example\\.com/.*/">
+        </div>
+        
+        <div class="form-group">
+          <label>التأخير قبل التنفيذ (مللي ثانية)</label>
+          <input type="number" id="ruleDelay" min="0" max="30000" value="1000">
+        </div>
+        
+        <div class="form-group">
+          <label>لمرة واحدة فقط</label>
+          <div class="checkbox-group">
+            <label class="toggle-switch">
+              <input type="checkbox" id="ruleOnceOnly">
+              <span class="slider"></span>
+            </label>
+            <span>تعطيل القاعدة بعد التنفيذ الأول</span>
+          </div>
+        </div>
+        
+        <h3 style="margin: 20px 0 15px;">الإجراءات</h3>
+        
+        <div id="actionsContainer">
+          <div class="action-item" style="background: #f8f9fa; padding: 15px; border-radius: 6px; margin-bottom: 10px;">
+            <div class="form-group">
+              <label>نوع الإجراء</label>
+              <select class="action-type">
+                <option value="click">نقر (Click)</option>
+                <option value="fill">ملء حقل (Fill)</option>
+                <option value="extract">استخراج بيانات (Extract)</option>
+                <option value="scroll">تمرير (Scroll)</option>
+                <option value="wait">انتظار (Wait)</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label>CSS Selector أو XPath</label>
+              <input type="text" class="action-selector" placeholder="#myButton أو //button[@id='submit']">
+            </div>
+            
+            <div class="form-group">
+              <label>القيمة (للملء)</label>
+              <input type="text" class="action-value" placeholder="القيمة المراد إدخالها">
+            </div>
+            
+            <div class="form-group">
+              <label>التأخير بعد الإجراء (مللي ثانية)</label>
+              <input type="number" class="action-delay" min="0" max="10000" value="500">
+            </div>
+            
+            <button class="btn btn-danger btn-sm remove-action">🗑️ حذف</button>
+          </div>
+        </div>
+        
+        <button class="btn btn-secondary" id="addAction">➕ إضافة إجراء</button>
+        
+        <hr style="margin: 30px 0;">
+        
+        <h3>القواعد المحفوظة</h3>
+        <div class="rules-list" id="savedRules">
+          <!-- سيتم تحميل القواعد هنا -->
+        </div>
+      </div>
+      
+      <button class="btn btn-primary" id="saveRule">💾 حفظ القاعدة</button>
+    </div>
+    
+    <!-- Tasks Tab -->
+    <div class="tab-content" id="tasks">
+      <div class="section">
+        <h2>المهام المجدولة</h2>
+        
+        <div class="info-box">
+          <h4>ℹ️ المهام الدورية</h4>
+          <p>يمكنك جدولة مهام يتم تنفيذها بشكل دوري على جميع التبويبات النشطة.</p>
+        </div>
+        
+        <table id="tasksTable">
+          <thead>
+            <tr>
+              <th>اسم المهمة</th>
+              <th>الحالة</th>
+              <th>الإجراءات</th>
+            </tr>
+          </thead>
+          <tbody id="tasksList">
+            <!-- سيتم تحميل المهام هنا -->
+          </tbody>
+        </table>
+        
+        <button class="btn btn-success" id="addTask" style="margin-top: 20px;">➕ إضافة مهمة جديدة</button>
+      </div>
+    </div>
+    
+    <!-- Monitoring Tab -->
+    <div class="tab-content" id="monitoring">
+      <div class="section">
+        <h2>إعدادات المراقبة</h2>
+        
+        <div class="info-box">
+          <h4>ℹ️ نظام المراقبة</h4>
+          <p>راقب التغيرات في عناصر الصفحة واحصل على تنبيهات عند حدوث تغييرات محددة.</p>
+        </div>
+        
+        <div class="form-group">
+          <label>فترة المراقبة (مللي ثانية)</label>
+          <input type="number" id="monitorInterval" min="1000" max="60000" value="5000">
+        </div>
+        
+        <div class="form-group">
+          <label>تمكين الإشعارات</label>
+          <div class="checkbox-group">
+            <label class="toggle-switch">
+              <input type="checkbox" id="enableNotifications">
+              <span class="slider"></span>
+            </label>
+            <span>إظهار إشعارات عند حدوث تغييرات</span>
+          </div>
+        </div>
+      </div>
+      
+      <button class="btn btn-primary" id="saveMonitoring">💾 حفظ الإعدادات</button>
+    </div>
+    
+    <!-- Logs Tab -->
+    <div class="tab-content" id="logs">
+      <div class="section">
+        <h2>سجل الأحداث</h2>
+        
+        <div class="form-group">
+          <label>عدد السجلات المعروضة</label>
+          <select id="logsLimit">
+            <option value="50">50 سجل</option>
+            <option value="100">100 سجل</option>
+            <option value="500">500 سجل</option>
+            <option value="1000">1000 سجل</option>
+          </select>
+        </div>
+        
+        <button class="btn btn-secondary" id="refreshLogs">🔄 تحديث</button>
+        <button class="btn btn-danger" id="clearLogs">🗑️ مسح جميع السجلات</button>
+        <button class="btn btn-success" id="exportLogs">📤 تصدير السجلات</button>
+        
+        <div id="logsDisplay" style="margin-top: 20px; max-height: 500px; overflow-y: auto; background: #f8f9fa; padding: 15px; border-radius: 6px;">
+          <!-- سيتم عرض السجلات هنا -->
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script src="options.js"></script>
+</body>
+</html>
